@@ -1,0 +1,55 @@
+//Примечание: Папка RootPanel и связанные с ней файлы
+//это лишь демонстрация моей идеи реализации панели управления доступом.
+//Если данный функционал не требуется в финальной сборке,
+//вы можете смело удалить папку RootPanel и
+//соответствующие маршруты в Router.jsx.
+// Внизу есть Рабочый Router.jsx Без Root
+
+//import { Routes, Route, Navigate } from "react-router-dom";
+// import DashboardLogic from "../layouts/DashboardLayout/DashboardLogic";
+// import AuthLogic from "../auth/AuthLogic";
+
+// // Импорт всех страниц
+// import Dashboard from "../views/Dashboard/Dashboard";
+// import CRM from "../views/CRM/CRM";
+// import Products from "../views/Products/Products";
+// import AIAnalytics from "../views/AIAnalytics/AIAnalytics";
+// import CameraMonitor from "../views/CameraMonitor/CameraMonitor";
+// import ExpireManagement from "../views/ExpireManagement/ExpireManagement";
+// import Inventory from "../views/Inventory/Inventory";
+// import POS from "../views/POS/POS";
+// import PurchaseOrders from "../views/PurchaseOrders/PurchaseOrders";
+// import Reports from "../views/Reports/Reports";
+// import SalesStats from "../views/SalesStats/SalesStats";
+// import Settings from "../views/Settings/Settings";
+// import Suppliers from "../views/Suppliers/Suppliers";
+
+// function Router() {
+//   return (
+//     <>
+//       <Routes>
+//         <Route path="/login" element={<AuthLogic />} />
+
+//         <Route element={<DashboardLogic />}>
+//           <Route path="/" element={<Dashboard />} />
+//           <Route path="/crm" element={<CRM />} />
+//           <Route path="/products" element={<Products />} />
+//           <Route path="/inventory" element={<Inventory />} />
+//           <Route path="/pos" element={<POS />} />
+//           <Route path="/ai-analytics" element={<AIAnalytics />} />
+//           <Route path="/camera-monitor" element={<CameraMonitor />} />
+//           <Route path="/expire-management" element={<ExpireManagement />} />
+//           <Route path="/purchase-orders" element={<PurchaseOrders />} />
+//           <Route path="/reports" element={<Reports />} />
+//           <Route path="/sales-stats" element={<SalesStats />} />
+//           <Route path="/suppliers" element={<Suppliers />} />
+//           <Route path="/settings" element={<Settings />} />
+//         </Route>
+
+//         <Route path="*" element={<Navigate to="/" />} />
+//       </Routes>
+//     </>
+//   );
+// }
+
+// export default Router;

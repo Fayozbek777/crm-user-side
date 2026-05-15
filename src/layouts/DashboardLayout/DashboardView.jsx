@@ -2,40 +2,44 @@ import React from "react";
 import Sidebar from "../SideBar/Sidebar";
 import Navbar from "../../components/Navbar/Navbar";
 
+/*
+  Layout colour scheme:
+  ┌─ Sidebar  ─ deep navy  #0f172a  (slate-900)
+  ├─ Navbar   ─ pure white  #ffffff  with bottom border
+  └─ Content  ─ soft grey  #f8fafc  (slate-50)
+*/
+
 const DashboardView = ({ isSidebarOpen, toggleSidebar, children }) => {
   return (
-    <div className="flex min-h-screen bg-slate-50 text-slate-900 overflow-hidden relative">
+    <div className="flex min-h-screen bg-slate-50 overflow-hidden">
       {/* ── Mobile overlay ── */}
       <div
-        className={`fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-40 transition-all duration-300 lg:hidden
-          ${isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
         onClick={toggleSidebar}
+        className={`fixed inset-0 z-40 bg-slate-900/50 backdrop-blur-sm transition-all duration-300 lg:hidden
+          ${isSidebarOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"}`}
       />
 
       {/* ── Sidebar ── */}
       <aside
-        className={`
-          h-screen sticky top-0 z-50 shrink-0
-          bg-white border-r border-slate-100 shadow-sm
-          transition-all duration-300 ease-in-out overflow-hidden
-          fixed lg:relative
-          ${isSidebarOpen ? "w-64 opacity-100 visible" : "w-0 opacity-0 invisible lg:border-none"}
-        `}
+        className={`fixed lg:relative z-50 h-screen shrink-0
+          bg-slate-900 transition-all duration-300 ease-in-out overflow-hidden
+          ${isSidebarOpen ? "w-[240px]" : "w-0 lg:w-[72px]"}`}
       >
-        <div className="w-64 h-full">
+        {/* inner always 240px wide so content doesn't reflow */}
+        <div className="w-[240px] h-full">
           <Sidebar isCollapsed={!isSidebarOpen} />
         </div>
       </aside>
 
-      {/* ── Main area ── */}
+      {/* ── Right column ── */}
       <div className="flex-1 flex flex-col min-w-0 h-screen overflow-hidden">
-        {/* Navbar */}
-        <header className="h-[68px] shrink-0 border-b border-slate-100 bg-white/90 backdrop-blur-md flex items-center px-6 shadow-sm z-30">
+        {/* Navbar — white */}
+        <header className="h-16 shrink-0 bg-white border-b border-slate-100 shadow-sm flex items-center px-5 z-30">
           <Navbar toggleSidebar={toggleSidebar} isSidebarOpen={isSidebarOpen} />
         </header>
 
-        {/* Page content */}
-        <main className="flex-1 overflow-x-hidden overflow-y-auto bg-slate-50">
+        {/* Page content — slate-50 */}
+        <main className="flex-1 overflow-y-auto overflow-x-hidden bg-slate-50">
           <div className="max-w-[1600px] mx-auto">{children}</div>
         </main>
       </div>

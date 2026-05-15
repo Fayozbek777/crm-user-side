@@ -12,7 +12,22 @@ export const useRootLogic = () => {
 
   useEffect(() => {
     const saved = localStorage.getItem("crm_users");
-    if (saved) setUsers(JSON.parse(saved));
+    if (saved) {
+      setUsers(JSON.parse(saved));
+    } else {
+      const defaultAdmin = [
+        {
+          id: 1,
+          username: "admin",
+          password: "123",
+          fullName: "Asosiy Admin",
+          role: "Admin",
+          salary: "0",
+        },
+      ];
+      setUsers(defaultAdmin);
+      localStorage.setItem("crm_users", JSON.stringify(defaultAdmin));
+    }
   }, []);
 
   const addUser = (e) => {
@@ -33,10 +48,17 @@ export const useRootLogic = () => {
   };
 
   const deleteUser = (id) => {
-    const updated = users.filter((u) => u.id !== id);
-    setUsers(updated);
-    localStorage.setItem("crm_users", JSON.stringify(updated));
+    if (window.confirm("Ushbu xodimni o'chirishni xohlaysizmi?")) {
+      const updated = users.filter((u) => u.id !== id);
+      setUsers(updated);
+      localStorage.setItem("crm_users", JSON.stringify(updated));
+    }
   };
 
-  return { users, newUser, setNewUser, addUser, deleteUser };
+  const totalSalaryFund = users.reduce(
+    (acc, curr) => acc + (Number(curr.salary) || 0),
+    0,
+  );
+
+  return { users, newUser, setNewUser, addUser, deleteUser, totalSalaryFund };
 };

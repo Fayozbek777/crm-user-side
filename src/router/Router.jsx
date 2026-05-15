@@ -9,8 +9,13 @@ import CRM from "../views/CRM/CRM";
 import Products from "../views/Products/Products";
 import Inventory from "../views/Inventory/Inventory";
 import Settings from "../views/Settings/Settings";
+import POS from "../views/POS/POS";
+import PurchaseOrders from "../views/PurchaseOrders/PurchaseOrders";
+import ExpireManagement from "../views/ExpireManagement/ExpireManagement";
+import Reports from "../views/Reports/Reports";
+import SalesStats from "../views/SalesStats/SalesStats";
+import Suppliers from "../views/Suppliers/Suppliers";
 
-// src/routes/Router.jsx
 const ProtectedRoute = ({ allowedRoles }) => {
   const userRaw = localStorage.getItem("user");
   const user = userRaw ? JSON.parse(userRaw) : null;
@@ -45,17 +50,18 @@ function Router() {
           <Route path="/products" element={<Products />} />
           <Route path="/inventory" element={<Inventory />} />
           <Route path="/settings" element={<Settings />} />
-          {/* Здесь можно добавить остальные маршруты CRM */}
+          <Route path="/posterminal" element={<POS />} />
+          <Route path="/purchase-orders" element={<PurchaseOrders />} />
+          <Route path="/expire-products" element={<ExpireManagement />} />
+          <Route path="/reports" element={<Reports />} />
+          <Route path="/salestatus" element={<SalesStats />} />
+          <Route path="/suppliers" element={<Suppliers />} />
+          <Route path="/pruchase-orders" element={<PurchaseOrders />} />
         </Route>
       </Route>
-
-      {/* 3. ТОЛЬКО ДЛЯ SUPER ADMIN (Секретная панель) */}
       <Route element={<ProtectedRoute allowedRoles={["Super Admin"]} />}>
-        {/* Путь формируется динамически из .env */}
         <Route path={`/${SECRET_ROOT_PATH}`} element={<Root />} />
       </Route>
-
-      {/* 4. РЕДИРЕКТ ПРИ ОШИБКЕ ПУТИ */}
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );

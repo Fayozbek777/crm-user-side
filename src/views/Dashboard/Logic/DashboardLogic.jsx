@@ -1,8 +1,6 @@
 import { useState } from "react";
-import { ShoppingBag, Users, Package, AlertCircle, Clock } from "lucide-react";
 import React from "react";
-
-// COSTUM DINAMIC DATA
+import { ShoppingBag, Users, Package, AlertCircle, Clock } from "lucide-react";
 
 export const useDashboardLogic = () => {
   const [salesRange, setSalesRange] = useState("7 KUNLIK");
@@ -26,12 +24,15 @@ export const useDashboardLogic = () => {
       { date: "4-hafta", amount: 55000000 },
     ],
     "1 YIL": [
-      { date: "Jan", amount: 120000000 },
-      { date: "Feb", amount: 150000000 },
+      { date: "Yan", amount: 120000000 },
+      { date: "Fev", amount: 150000000 },
       { date: "Mar", amount: 110000000 },
       { date: "Apr", amount: 180000000 },
+      { date: "May", amount: 160000000 },
+      { date: "Iyu", amount: 190000000 },
     ],
     BARCHASI: [
+      { date: "2023", amount: 900000000 },
       { date: "2024", amount: 1200000000 },
       { date: "2025", amount: 1500000000 },
       { date: "2026", amount: 800000000 },
@@ -46,15 +47,15 @@ export const useDashboardLogic = () => {
       { name: "Lays Chips", qty: "65 ta", price: "650,000" },
       { name: "Snickers 50g", qty: "54 ta", price: "540,000" },
     ],
-    Kech: [
+    Kecha: [
       { name: "Orbit", qty: "200 ta", price: "1,000,000" },
-      { name: "Snikers", qty: "150 ta", price: "750,000" },
+      { name: "Snickers", qty: "150 ta", price: "750,000" },
       { name: "Pepsi 0.5L", qty: "120 ta", price: "600,000" },
     ],
     "Otgan hafta": [
       { name: "Cola 2L", qty: "540 ta", price: "5,400,000" },
       { name: "Non", qty: "420 ta", price: "4,200,000" },
-      { name: "Yog 1L", qty: "310 ta", price: "3,100,000" },
+      { name: "Yog' 1L", qty: "310 ta", price: "3,100,000" },
     ],
     "Otgan oy": [
       { name: "Shakar 1kg", qty: "1200 ta", price: "12,000,000" },
@@ -68,7 +69,7 @@ export const useDashboardLogic = () => {
       id: 1,
       title: "Bugungi Sotuv",
       value: "12,450,000",
-      icon: React.createElement(ShoppingBag, { size: 20 }),
+      icon: React.createElement(ShoppingBag, { size: 18 }),
       color: "blue",
       sub: "Kecha bilan solishtirganda",
     },
@@ -76,7 +77,7 @@ export const useDashboardLogic = () => {
       id: 2,
       title: "Umumiy Foyda",
       value: "3,250,000",
-      icon: React.createElement(Users, { size: 20 }),
+      icon: React.createElement(Users, { size: 18 }),
       color: "green",
       sub: "+22.1% o'sish",
     },
@@ -84,7 +85,7 @@ export const useDashboardLogic = () => {
       id: 3,
       title: "Jami Mahsulot",
       value: "1,234",
-      icon: React.createElement(Package, { size: 20 }),
+      icon: React.createElement(Package, { size: 18 }),
       color: "yellow",
       sub: "Yangi qo'shildi +6",
     },
@@ -95,7 +96,7 @@ export const useDashboardLogic = () => {
       id: 4,
       title: "Kam qolgan",
       value: "23",
-      icon: React.createElement(AlertCircle, { size: 20 }),
+      icon: React.createElement(AlertCircle, { size: 18 }),
       color: "red",
       sub: "Zaxira to'ldirish shart",
     },
@@ -103,10 +104,18 @@ export const useDashboardLogic = () => {
       id: 5,
       title: "Muddati o'tgan",
       value: "7",
-      icon: React.createElement(Clock, { size: 20 }),
+      icon: React.createElement(Clock, { size: 18 }),
       color: "orange",
       sub: "Sotuvdan olish kerak",
     },
+  ];
+
+  const inventory = [
+    { name: "Cola 1L", stock: "2 ta", status: "kam" },
+    { name: "Yog' 1L", stock: "1 ta", status: "kam" },
+    { name: "Shakar 1kg", stock: "3 ta", status: "kam" },
+    { name: "Tuz 1kg", stock: "0 ta", status: "tugagan" },
+    { name: "Pepsi 1L", stock: "2 ta", status: "kam" },
   ];
 
   return {
@@ -120,12 +129,6 @@ export const useDashboardLogic = () => {
     setSelectedCamera,
     stats,
     alerts,
-    inventory: [
-      { name: "Cola 1L", stock: "2 ta", status: "kam" },
-      { name: "Yog' 1L", stock: "1 ta", status: "kam" },
-      { name: "Shakar 1kg", stock: "3 ta", status: "kam" },
-      { name: "Tuz 1kg", stock: "0 ta", status: "tugagan" },
-      { name: "Pepsi 1L", stock: "2 ta", status: "kam" },
-    ],
+    inventory,
   };
 };

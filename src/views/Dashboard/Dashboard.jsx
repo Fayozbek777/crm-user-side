@@ -2,6 +2,12 @@ import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDashboardLogic } from "./Logic/DashboardLogic";
 import {
+  AlertTriangle,
+  Hourglass,
+  ShoppingCart,
+  ArrowRight,
+} from "lucide-react";
+import {
   AreaChart,
   Area,
   XAxis,
@@ -77,6 +83,19 @@ const FadeUp = ({ children, delay = 0, className = "" }) => {
   );
 };
 
+const containerVars = {
+  hidden: { opacity: 0 },
+  visible: {
+    opacity: 1,
+    transition: { staggerChildren: 0.1 },
+  },
+};
+
+// Варианты для каждого элемента
+const itemVars = {
+  hidden: { y: 20, opacity: 0 },
+  visible: { y: 0, opacity: 1, transition: { type: "spring", stiffness: 100 } },
+};
 /* ── custom recharts tooltip ── */
 const ChartTip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null;
@@ -131,6 +150,79 @@ export default function Dashboard() {
     "bg-orange-500",
   ];
 
+  const InventoryRow = ({ name, sub, status, type }) => (
+    <motion.div
+      whileHover={{ x: 5 }}
+      className="flex items-center justify-between group cursor-default"
+    >
+      <div className="flex items-center gap-3">
+        <div
+          className={`w-10 h-10 rounded-xl flex items-center justify-center font-black ${type === "danger" ? "bg-red-50 text-red-500" : "bg-slate-100 text-slate-400"}`}
+        >
+          {name.charAt(0)}
+        </div>
+        <div>
+          <p className="text-sm font-bold text-slate-800 group-hover:text-red-500 transition-colors">
+            {name}
+          </p>
+          <p className="text-[10px] text-slate-400 font-medium">{sub}</p>
+        </div>
+      </div>
+      <div
+        className={`px-3 py-1 rounded-lg text-[10px] font-black uppercase ${type === "danger" ? "bg-red-50 text-red-600" : "bg-slate-100 text-slate-500"}`}
+      >
+        {status}
+      </div>
+    </motion.div>
+  );
+
+  const ExpireRow = ({ name, days, status, color, percent }) => (
+    <div>
+      <div className="flex justify-between items-end mb-2">
+        <div>
+          <p className="text-sm font-bold text-slate-800">{name}</p>
+          <p
+            className={`text-[10px] font-black uppercase ${status === "Yomon" ? "text-red-500" : "text-slate-400"}`}
+          >
+            {status}
+          </p>
+        </div>
+        <span className="text-xs font-black text-slate-700">{days}</span>
+      </div>
+      <div className="w-full h-1.5 bg-slate-100 rounded-full">
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: percent }}
+          transition={{ duration: 1, delay: 0.5 }}
+          className={`h-full rounded-full ${color}`}
+        />
+      </div>
+    </div>
+  );
+
+  const AnalysisRow = ({ name, val, profit, color, w }) => (
+    <div className="group">
+      <div className="flex justify-between items-center mb-2">
+        <span className="text-sm font-bold text-slate-800">
+          {name} <span className="text-slate-300 ml-1">{val}</span>
+        </span>
+        <span
+          className={`text-[11px] font-black ${profit.startsWith("+") ? "text-emerald-500" : "text-red-500"}`}
+        >
+          {profit}
+        </span>
+      </div>
+      <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          style={{ originX: 0 }}
+          transition={{ duration: 0.8, ease: "circOut" }}
+          className={`h-full ${color} ${w} rounded-full`}
+        />
+      </div>
+    </div>
+  );
   return (
     <div className="min-h-screen bg-slate-50/80 p-6 lg:p-8 space-y-6">
       {/* ── Page header ── */}
@@ -162,7 +254,6 @@ export default function Dashboard() {
           </div>
         </div>
       </FadeUp>
-
       {/* ── Stat cards ── */}
       <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
         {allCards.map((card, i) => {
@@ -197,7 +288,6 @@ export default function Dashboard() {
           );
         })}
       </div>
-
       {/* ── Chart + Products ── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Area chart */}
@@ -365,7 +455,6 @@ export default function Dashboard() {
           </div>
         </FadeUp>
       </div>
-
       {/* ── Bottom row ── */}
       <div className="grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* AI Intellect */}
@@ -556,7 +645,6 @@ export default function Dashboard() {
           </div>
         </FadeUp>
       </div>
-
       {/* ── Camera modal ── */}
       <AnimatePresence>
         {selectedCamera && (
@@ -619,6 +707,171 @@ export default function Dashboard() {
           </motion.div>
         )}
       </AnimatePresence>
+      <motion.section
+        variants={containerVars}
+        initial="hidden"
+        animate="visible"
+        className="mt-10 grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-8"
+      >
+        {/* --- 1. Inventory Alerts (Neon Border Effect) --- */}
+        <motion.div
+          variants={itemVars}
+          className="bg-white/80 backdrop-blur-xl p-7 rounded-[2.5rem] border border-red-100 shadow-[0_20px_50px_rgba(248,113,113,0.05)] relative overflow-hidden"
+        >
+          <div className="absolute top-0 right-0 p-4 opacity-10">
+            <AlertTriangle size={80} />
+          </div>
+          <h3 className="text-xl font-black mb-6 text-slate-800 flex items-center gap-3">
+            <div className="p-2 bg-red-500 rounded-xl text-white shadow-lg shadow-red-200">
+              <AlertTriangle size={18} />
+            </div>
+            Ombor Qoldig'i
+          </h3>
+          <div className="space-y-4">
+            <InventoryRow
+              name="Cola 1l"
+              sub="2 ta qoldi"
+              status="Kam"
+              type="danger"
+            />
+            <InventoryRow
+              name="Yo'g 1l"
+              sub="1 ta qoldi"
+              status="Kam"
+              type="danger"
+            />
+            <InventoryRow
+              name="Shakar 1kg"
+              sub="3 ta qoldi"
+              status="Kam"
+              type="danger"
+            />
+            <InventoryRow name="Tuz kg" sub="Tugadi" status="0" type="empty" />
+            <InventoryRow
+              name="Pepsi 1l"
+              sub="2 ta qoldi"
+              status="Kam"
+              type="danger"
+            />
+          </div>
+        </motion.div>
+
+        {/* --- 2. Expire Tracking (Smooth Progress Indicators) --- */}
+        <motion.div
+          variants={itemVars}
+          className="bg-white/80 backdrop-blur-xl p-7 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40"
+        >
+          <h3 className="text-xl font-black mb-6 text-slate-800 flex items-center gap-3">
+            <div className="p-2 bg-indigo-500 rounded-xl text-white shadow-lg shadow-indigo-200">
+              <Hourglass size={18} />
+            </div>
+            Muddati Yaqin
+          </h3>
+          <div className="space-y-6">
+            <ExpireRow
+              name="Smetana 20%"
+              days="14 kun"
+              status="Yaxshi"
+              color="bg-emerald-500"
+              percent="80%"
+            />
+            <ExpireRow
+              name="Qatiq"
+              days="2 kun"
+              status="Boladi"
+              color="bg-amber-500"
+              percent="30%"
+            />
+            <ExpireRow
+              name="Salat Yog'i"
+              days="1 kun"
+              status="Boladi"
+              color="bg-amber-500"
+              percent="15%"
+            />
+            <ExpireRow
+              name="Tvorog"
+              days="Bugun"
+              status="Yomon"
+              color="bg-red-500"
+              percent="5%"
+            />
+          </div>
+        </motion.div>
+
+        {/* --- 3. Smart Reorder (Interactive Card) --- */}
+        <motion.div
+          variants={itemVars}
+          className="bg-slate-900 p-7 rounded-[2.5rem] shadow-2xl relative overflow-hidden group"
+        >
+          <div className="absolute -right-10 -top-10 w-40 h-40 bg-indigo-500/20 rounded-full blur-3xl group-hover:bg-indigo-500/40 transition-all duration-700" />
+          <h3 className="text-xl font-black mb-6 text-white flex items-center gap-3 relative z-10">
+            <div className="p-2 bg-white/10 rounded-xl text-indigo-400">
+              <Zap size={18} />
+            </div>
+            Smart Tavsiya
+          </h3>
+          <div className="relative z-10 space-y-4">
+            <div className="p-5 bg-white/5 border border-white/10 rounded-[2rem] backdrop-blur-md">
+              <div className="flex justify-between items-start mb-4">
+                <div>
+                  <h4 className="text-white font-bold text-lg">Cola 1.5L</h4>
+                  <p className="text-indigo-300 text-xs font-medium">
+                    Reorder tavsiya etiladi
+                  </p>
+                </div>
+                <span className="bg-indigo-500 text-white text-[10px] font-black px-3 py-1 rounded-full uppercase">
+                  50 dona
+                </span>
+              </div>
+              <motion.button
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+                className="w-full bg-white text-slate-900 py-3 rounded-2xl font-black text-sm flex items-center justify-center gap-2 shadow-xl shadow-white/5"
+              >
+                Buyurtma Berish <ArrowRight size={16} />
+              </motion.button>
+            </div>
+          </div>
+        </motion.div>
+
+        {/* --- 4. Analytics (Sleek Data Bars) --- */}
+        <motion.div
+          variants={itemVars}
+          className="bg-white/80 backdrop-blur-xl p-7 rounded-[2.5rem] border border-slate-100 shadow-xl shadow-slate-200/40"
+        >
+          <h3 className="text-xl font-black mb-6 text-slate-800 flex items-center gap-3">
+            <div className="p-2 bg-emerald-500 rounded-xl text-white shadow-lg shadow-emerald-200">
+              <TrendingUp size={18} />
+            </div>
+            Foyda Tahlili
+          </h3>
+          <div className="space-y-6">
+            <AnalysisRow
+              name="Cola 1l"
+              val="12.5M"
+              profit="+5.0M"
+              color="bg-emerald-500"
+              w="w-[90%]"
+            />
+            <AnalysisRow
+              name="Pepsi 1l"
+              val="3.5M"
+              profit="+3.0M"
+              color="bg-emerald-400"
+              w="w-[65%]"
+            />
+            <AnalysisRow
+              name="Qurt"
+              val="1.2M"
+              profit="-700k"
+              color="bg-red-500"
+              w="w-[30%]"
+            />
+          </div>
+        </motion.div>
+      </motion.section>
+      );
     </div>
   );
 }
